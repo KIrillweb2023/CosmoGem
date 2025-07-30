@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Pixelify+Sans:wght@400..700&display=swap');
+
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+
+.app {
+  width: 100%;
+  height: 100vh;
+  background: url("../../assets/bg-game/bg-game.jpg") center center / cover no-repeat;
+  position: relative;
+  z-index: 0;
+
+  &-overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #000000a4;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
+  }
+}
