@@ -30,12 +30,12 @@ export const GamePage = () => {
         gemRadius: 15,
         resources: {
             gems: {
-                sparkle: { color: 0xffcc00, light: 0xffeb3b, svg: '/GemsIcon/blue-gem.svg' },
-                diamond: { color: 0x00e5ff, light: 0x84ffff, svg: '/GemsIcon/green-gem.svg' },
-                crystal: { color: 0xab47bc, light: 0xce93d8, svg: '/GemsIcon/red-gem.svg' },
-                star: { color: 0xff9100, light: 0xffc46b, svg: '/GemsIcon/purple-gem.svg' },
-                lightning: { color: 0xffea00, light: 0xffff8d, svg: '/GemsIcon/revolte-gem.svg' },
-                heart: { color: 0xff1744, light: 0xff616f, svg: '/GemsIcon/yellow-gem.svg' },
+                sparkle: { color: 0xffcc00, light: 0xffeb3b, svg: `${import.meta.env.BASE_URL}/GemsIcon/amethyst-gem.png` },
+                diamond: { color: 0x00e5ff, light: 0x84ffff, svg: `${import.meta.env.BASE_URL}/GemsIcon/crystal-gem.png` },
+                crystal: { color: 0xab47bc, light: 0xce93d8, svg: `${import.meta.env.BASE_URL}/GemsIcon/emerald-gem.png` },
+                star: { color: 0xff9100, light: 0xffc46b, svg: `${import.meta.env.BASE_URL}/GemsIcon/ruby-gem.png` },
+                lightning: { color: 0xffea00, light: 0xffff8d, svg: `${import.meta.env.BASE_URL}/GemsIcon/ruby2-gem.png` },
+                heart: { color: 0xff1744, light: 0xff616f, svg: `${import.meta.env.BASE_URL}/GemsIcon/topaz-gem.png` },
             }
         }
     };
@@ -134,23 +134,29 @@ export const GamePage = () => {
 
     // Resize game elements
     const resizeGame = () => {
-        // Получаем размеры области просмотра
         const screenWidth = window.innerWidth;
         const screenHeight = window.innerHeight;
 
         // Определяем максимальный размер доски
         const boardSize = Math.min(screenWidth * 0.9, screenHeight * 0.8);
 
-        // Рассчитываем размер элементов
+        // Рассчитываем размер элементов (подложки остаются прежними)
         const maxGemWidth = Math.floor((boardSize - (config.cols + 1) * config.gemPadding) / config.cols);
         const maxGemHeight = Math.floor((boardSize - (config.rows + 1) * config.gemPadding) / config.rows);
 
-        config.gemSize = Math.max(Math.min(maxGemWidth, maxGemHeight, 80), 30);
-        config.gemPadding = Math.floor(config.gemSize * 0.15);
-        config.gemRadius = Math.floor(config.gemSize * 0.2);
+        // Уменьшаем только размер камешков, оставляя подложки прежними
+        const newGemSize = Math.max(Math.min(maxGemWidth, maxGemHeight, 40), 20);
+
+        // Сохраняем оригинальный padding или вычисляем его независимо
+        const originalPadding = config.gemPadding || Math.floor(newGemSize * 0.15);
+
+        // Применяем изменения
+        config.gemSize = newGemSize;
+        config.gemPadding = originalPadding; // оставляем padding без изменений
+        config.gemRadius = Math.floor(newGemSize * 0.2);
 
         // Рассчитываем финальные размеры доски
-        const padding = 20;
+        const padding = 25;
         const totalBoardWidth = config.cols * (config.gemSize + config.gemPadding) - config.gemPadding;
         const totalBoardHeight = config.rows * (config.gemSize + config.gemPadding) - config.gemPadding;
 
@@ -161,9 +167,7 @@ export const GamePage = () => {
             totalBoardHeight + padding * 2
         );
 
-        // Центрируем доску внутри canvas
         boardContainerRef.current?.position.set(padding, padding);
-
         updateBoardSize();
     };
 
@@ -230,19 +234,6 @@ export const GamePage = () => {
         boardBg.lineStyle(3, 0x4a6caa, 0.7)
             .drawRoundedRect(-10, -10, totalWidth + 20, totalHeight + 20, 15);
 
-        // Grid
-        boardBg.lineStyle(1, 0x3a4a7a, 0.3);
-        for (let y = 0; y < config.rows; y++) {
-            for (let x = 0; x < config.cols; x++) {
-                boardBg.drawRoundedRect(
-                    x * cellSize,
-                    y * cellSize,
-                    config.gemSize,
-                    config.gemSize,
-                    config.gemRadius
-                );
-            }
-        }
 
         // Glow effect
         const glow = new PIXI.Graphics();

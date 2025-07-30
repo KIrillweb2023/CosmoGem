@@ -1,0 +1,64 @@
+.app {
+    &-tops {
+        &-list {
+            display: flex;
+            flex-direction: column;
+            row-gap: 10px;
+            width: 100%;
+            height: auto;
+            margin-top: 20px;
+        }
+
+        &-item {
+            background: rgba(52, 1, 99, 0.7);
+            width: 100%;
+            height: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 10px;
+            padding: 15px 15px;
+
+            &_person {
+                display: flex;
+                align-items: center;
+                column-gap: 15px;
+
+                &__icon {
+                    width: 45px;
+                    height: 45px;
+                    border-radius: 10px;
+                }
+
+                &__name {
+                    color: #c4b5fd;
+                    font-weight: 500;
+                    font-size: 20px;
+                    text-shadow:
+                        0 0 8px rgba(168, 85, 247, 0.5),
+                        0 0 2px rgba(255, 255, 255, 0.8);
+                }
+            }
+
+            &_count {
+                display: flex;
+                align-items: center;
+                column-gap: 10px;
+
+                &__icon {
+                    width: 25px;
+                }
+
+                &__keys {
+                    color: #c4b5fd;
+                    font-weight: 500;
+                    font-size: 20px;
+                    text-shadow:
+                        0 0 8px rgba(168, 85, 247, 0.5),
+                        0 0 2px rgba(255, 255, 255, 0.8);
+                }
+            }
+        }
+    }
+}

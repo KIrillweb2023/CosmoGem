@@ -1,0 +1,38 @@
+.app {
+    &-tops {
+        &-title {
+            color: #fff;
+            font-size: 36px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+            text-shadow:
+                0 0 10px rgba(168, 85, 247, 0.7),
+                0 0 20px rgba(124, 58, 237, 0.4);
+            position: relative;
+
+            &::after {
+                content: '';
+                display: block;
+                width: 60px;
+                height: 3px;
+                background: linear-gradient(90deg, #a855f7, #6366f1);
+                margin: 10px auto 0;
+                border-radius: 3px;
+            }
+        }
+
+        &-text {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 16px;
+            line-height: 1.4;
+            font-weight: 300;
+            text-align: center;
+            margin-top: 20px;
+        }
+    }
+
+
+
+}

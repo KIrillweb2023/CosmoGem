@@ -1,0 +1,143 @@
+.app {
+    &-tops {
+        display: flex;
+        flex-direction: column;
+        row-gap: 10px;
+        align-items: center;
+        padding: 0 10px;
+        padding-top: 10px;
+
+
+        &-btns {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            column-gap: 10px;
+            padding-bottom: 40px;
+        }
+
+        &-btn {
+            position: relative;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            backdrop-filter: blur(12px);
+            flex: 1;
+            height: 45px;
+            overflow: hidden;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            /* Общие эффекты для всех кнопок */
+            &::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(255, 255, 255, 0.08);
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                border-radius: 10px;
+                z-index: -1;
+                transition: all 0.4s ease;
+            }
+
+            &::after {
+                content: '';
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+                opacity: 0;
+                transition: opacity 0.4s ease;
+                z-index: -1;
+            }
+
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+
+                &::before {
+                    background: rgba(255, 255, 255, 0.12);
+                    border-color: rgba(255, 255, 255, 0.25);
+                }
+
+                &::after {
+                    opacity: 1;
+                }
+            }
+
+            &:active {
+                transform: translateY(1px) scale(0.98);
+                transition: all 0.1s ease;
+
+                &::before {
+                    background: rgba(255, 255, 255, 0.05);
+                    border-color: rgba(255, 255, 255, 0.1);
+                }
+            }
+
+            &:active:after {
+                background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+                opacity: 1;
+                transition: opacity 0s;
+            }
+        }
+
+        &-home {
+            background: linear-gradient(135deg,
+                    rgba(124, 58, 237, 0.7) 0%,
+                    rgba(139, 92, 246, 0.5) 100%);
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            box-shadow:
+                0 4px 15px rgba(124, 58, 237, 0.3),
+                inset 0 1px 1px rgba(255, 255, 255, 0.1);
+
+            &::before {
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            &:hover {
+                box-shadow:
+                    0 6px 25px rgba(124, 58, 237, 0.4),
+                    inset 0 1px 1px rgba(255, 255, 255, 0.15);
+            }
+        }
+
+        /* Специфичные стили для кнопки Restart */
+        &-restart {
+            width: 100px;
+            background: linear-gradient(135deg,
+                    rgba(30, 0, 60, 0.7) 0%,
+                    rgba(60, 0, 90, 0.5) 100%);
+            color: rgba(255, 255, 255, 0.95);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.25),
+                inset 0 1px 1px rgba(255, 255, 255, 0.05);
+
+            &::before {
+                border-color: rgba(255, 255, 255, 0.1);
+            }
+
+            &:hover {
+                box-shadow:
+                    0 6px 25px rgba(0, 0, 0, 0.35),
+                    inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            }
+        }
+    }
+
+
+
+}

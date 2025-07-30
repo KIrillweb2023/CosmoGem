@@ -15,12 +15,17 @@ a {
 }
 
 
+::-webkit-scrollbar {
+  display: none;
+}
+
 .app {
   width: 100%;
   height: 100vh;
   background: url("../../assets/bg-game/bg-game.jpg") center center / cover no-repeat;
   position: relative;
   z-index: 0;
+  overflow-y: scroll;
 
   &-overlay {
     position: absolute;

@@ -1,4 +1,5 @@
 import "./Header.scss";
+import { Link } from "react-router-dom";
 
 import LogoGame from "../../assets/logoGame/logo-game.jpeg";
 import StageIcon from "../../assets/stages.svg";
@@ -13,9 +14,9 @@ export const Header = () => {
                         <h4 className="header-logo-text">Admin accaunt</h4>
                     </div>
 
-                    <div className="header-stage">
+                    <Link to={"/tops"} className="header-stage">
                         <img src={StageIcon} alt="stage" width={20} height={20} />
-                    </div>
+                    </Link>
                 </div>
             </div>
         </>
