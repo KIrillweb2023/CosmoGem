@@ -1,0 +1,73 @@
+.app {
+    &-game {
+        &-score {
+            padding: 0px 10px;
+            padding-top: 20px;
+        }
+
+        &-wrapper {
+            width: 100%;
+            height: auto;
+            background: rgba(52, 1, 99, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            border-radius: 10px;
+        }
+
+        &-count {
+            display: flex;
+            align-items: center;
+            column-gap: 10px;
+
+            &_text {
+                color: #c4b5fd;
+                font-weight: 500;
+                font-size: 18px;
+                text-shadow:
+                    0 0 8px rgba(168, 85, 247, 0.5),
+                    0 0 2px rgba(255, 255, 255, 0.8);
+            }
+
+            &_record {
+                color: #c4b5fd;
+                font-weight: 700;
+                font-size: 20px;
+                letter-spacing: 1px;
+                text-shadow:
+                    0 0 10px rgba(168, 85, 247, 0.8),
+                    0 0 20px rgba(168, 85, 247, 0.6),
+                    0 0 30px rgba(168, 85, 247, 0.4),
+                    0 0 2px rgba(255, 255, 255, 0.8);
+
+                position: relative;
+                padding: 5px 15px;
+                border-radius: 8px;
+                background: rgba(30, 10, 60, 0.3);
+                border: 1px solid rgba(168, 85, 247, 0.3);
+
+            }
+        }
+
+        &-keys {
+            display: flex;
+            align-items: center;
+            column-gap: 10px;
+
+            &_icon {
+                width: 20px;
+            }
+
+            &_count {
+                color: #c4b5fd;
+                font-weight: 500;
+                font-size: 18px;
+                text-shadow:
+                    0 0 8px rgba(168, 85, 247, 0.5),
+                    0 0 2px rgba(255, 255, 255, 0.8);
+            }
+        }
+    }
+}
