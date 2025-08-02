@@ -5,6 +5,10 @@ import { Link } from "react-router-dom";
 import "./GamePage.scss";
 import { ScoreGame } from '../../components/ScoreGame/ScoreGame';
 import { useGems } from '../../hooks/useGems';
+import { setupEventUtils } from '../../utils/setupEventUtils';
+import { ErrorShow } from '../../components/ErrorShow/ErrorShow';
+
+import { config } from '../../constants/ConfigurationGame';
 
 export const GamePage = () => {
     // Refs
@@ -12,50 +16,18 @@ export const GamePage = () => {
     const boardContainerRef = useRef(null);
     const resizeTimeoutRef = useRef(null);
 
-    // Game configuration
-    const config = {
-        rows: 7,
-        cols: 7,
-        gemSize: 0,
-        gemPadding: 10,
-        gemRadius: 15,
-        resources: {
-            gems: {
-                sparkle: { color: 0xffcc00, light: 0xffeb3b, svg: `${import.meta.env.BASE_URL}/GemsIcon/amethyst-gem.png` },
-                diamond: { color: 0x00e5ff, light: 0x84ffff, svg: `${import.meta.env.BASE_URL}/GemsIcon/crystal-gem.png` },
-                crystal: { color: 0xab47bc, light: 0xce93d8, svg: `${import.meta.env.BASE_URL}/GemsIcon/emerald-gem.png` },
-                star: { color: 0xff9100, light: 0xffc46b, svg: `${import.meta.env.BASE_URL}/GemsIcon/ruby-gem.png` },
-                lightning: { color: 0xffea00, light: 0xffff8d, svg: `${import.meta.env.BASE_URL}/GemsIcon/ruby2-gem.png` },
-                heart: { color: 0xff1744, light: 0xff616f, svg: `${import.meta.env.BASE_URL}/GemsIcon/topaz-gem.png` },
-            }
-        },
-        keys: {
-            spawnChance: 0.05,
-            scoreValue: 150,
-            texture: `${import.meta.env.BASE_URL}/key.png`
-        }
-    };
-
     const gemTypes = Object.keys(config.resources.gems);
     const loadedTexturesRef = useRef({});
 
     // Custom hooks
     const {
-        boardRef,
-        selectedGemRef,
-        combo,
         score,
         initializeBoard,
         initializeGems,
-        isAdjacent,
-        swapGems,
-        checkPotentialMatches,
-        destroyGems,
-        hasValidMoves,
         removeInitialMatches,
         setupComboText,
         updateCombo,
-        recreateBoard
+        setScore,
     } = useGems(appRef, boardContainerRef, config, gemTypes, loadedTexturesRef);
 
     useEffect(() => {
@@ -85,12 +57,12 @@ export const GamePage = () => {
                 initializeBoard();
                 resizeGame();
                 createBoard();
-                setupEventListeners();
+                setupEventUtils(setScore, updateCombo, createBoard);
                 window.addEventListener('resize', handleResize);
 
             } catch (error) {
                 console.error('Game initialization error:', error);
-                showError(error.message);
+                ErrorShow(error.message);
             }
         };
 
@@ -241,53 +213,6 @@ export const GamePage = () => {
         initializeGems();
         removeInitialMatches();
         setupComboText();
-    };
-
-
-    // Show error message
-    const showError = (message) => {
-        const errorContainer = document.getElementById('game-board') || document.body;
-        errorContainer.innerHTML = `
-            <div style="
-                color: white;
-                background: #1a1a2e;
-                padding: 20px;
-                border-radius: 10px;
-                font-family: Arial;
-                text-align: center;
-                max-width: 500px;
-                margin: 20px auto;
-            ">
-                <h3 style="color: #ff4757">Game Error</h3>
-                <p>${message}</p>
-                <button style="
-                    background: #ff4757;
-                    color: white;
-                    border: none;
-                    padding: 10px 20px;
-                    border-radius: 5px;
-                    margin-top: 15px;
-                    cursor: pointer;
-                " onclick="window.location.reload()">
-                    Try Again
-                </button>
-                <p style="margin-top: 20px; font-size: 0.8em; opacity: 0.7;">
-                    If the error persists, try another browser
-                </p>
-            </div>
-        `;
-    };
-
-    // Setup event listeners
-    const setupEventListeners = () => {
-        const restartBtn = document.getElementById('restart-btn');
-        if (restartBtn) {
-            restartBtn.addEventListener('click', () => {
-                setScore(0);
-                updateCombo(0);
-                createBoard();
-            });
-        }
     };
 
     return (
