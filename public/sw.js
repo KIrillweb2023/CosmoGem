@@ -10,7 +10,6 @@ const ASSETS = [
     '/AppIcons/favicon.ico',
     '/AppIcons/favicon-32x32.png',
     '/assets/stages.svg',
-    '/assets/key.png',
     '/assets/images/logo-game.jpeg',
     '/assets/bg-game/bg-game.jpg',
     '/assets/AccauntImage/baggi.jpeg',
@@ -31,17 +30,14 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-    // Пропускаем запросы, которые не являются GET или относятся к другому источнику
     if (event.request.method !== 'GET' || !event.request.url.startsWith(self.location.origin)) {
         return;
     }
 
-    // Для API запросов используем сеть с fallback к кэшу
     if (event.request.url.includes('/api/')) {
         event.respondWith(
             fetch(event.request)
                 .then(response => {
-                    // Клонируем ответ для кэширования
                     const responseToCache = response.clone();
                     caches.open(CACHE_NAME)
                         .then(cache => cache.put(event.request, responseToCache));
@@ -52,23 +48,18 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    // Для статических ресурсов используем стратегию Cache First
     event.respondWith(
         caches.match(event.request)
             .then(cachedResponse => {
-                // Возвращаем кэшированный ответ, если он есть
                 if (cachedResponse) {
                     return cachedResponse;
                 }
 
-                // Иначе загружаем из сети и кэшируем
                 return fetch(event.request).then(response => {
-                    // Проверяем валидность ответа
                     if (!response || response.status !== 200 || response.type !== 'basic') {
                         return response;
                     }
 
-                    // Клонируем ответ для кэширования
                     const responseToCache = response.clone();
                     caches.open(CACHE_NAME)
                         .then(cache => cache.put(event.request, responseToCache));

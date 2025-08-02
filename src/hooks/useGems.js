@@ -512,7 +512,7 @@ export const useGems = (appRef, boardContainerRef, config, gemTypes, loadedTextu
 
         // 2. Анимация падения существующих камней
         const cellSize = config.gemSize + config.gemPadding;
-        const fallDuration = 0.4; // Базовая длительность анимации
+        const fallDuration = 0.2; // Базовая длительность анимации
 
         // Сначала вычисляем все целевые позиции
         const moveAnimations = columnsData.map((colData, x) => {
@@ -552,7 +552,7 @@ export const useGems = (appRef, boardContainerRef, config, gemTypes, loadedTextu
                     newY,
                     delay,
                     // Чем ниже - тем дольше анимация
-                    duration: 0.12 + i * 0.05
+                    duration: 0.1 + i * 0.05
                 };
             });
         }).flat();

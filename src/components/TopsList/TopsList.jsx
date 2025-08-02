@@ -3,7 +3,6 @@ import "./TopsList.scss";
 import OneAccIcon from "../../assets/AccauntImage/baggi.jpeg";
 import TwoAccIcon from "../../assets/AccauntImage/enduro.jpeg";
 import ThreeAccIcon from "../../assets/AccauntImage/quadrocikle.jpeg";
-import keyIcon from "../../assets/key.png";
 
 export const TopsList = () => {
     return (
@@ -15,7 +14,7 @@ export const TopsList = () => {
                         <h4 className="app-tops-item_person__name">Gleb</h4>
                     </div>
                     <div className="app-tops-item_count">
-                        <img src={keyIcon} alt="icon-key" className="app-tops-item_count__icon" />
+                        <img src={`${import.meta.env.BASE_URL}/AppIcons/key.png`} alt="icon-key" className="app-tops-item_count__icon" />
                         <span className="app-tops-item_count__keys">425</span>
                     </div>
                 </div>
@@ -25,7 +24,7 @@ export const TopsList = () => {
                         <h4 className="app-tops-item_person__name">Kirill</h4>
                     </div>
                     <div className="app-tops-item_count">
-                        <img src={keyIcon} alt="icon-key" className="app-tops-item_count__icon" />
+                        <img src={`${import.meta.env.BASE_URL}/AppIcons/key.png`} alt="icon-key" className="app-tops-item_count__icon" />
                         <span className="app-tops-item_count__keys">422</span>
                     </div>
                 </div>
@@ -35,7 +34,7 @@ export const TopsList = () => {
                         <h4 className="app-tops-item_person__name">Vlad</h4>
                     </div>
                     <div className="app-tops-item_count">
-                        <img src={keyIcon} alt="icon-key" className="app-tops-item_count__icon" />
+                        <img src={`${import.meta.env.BASE_URL}/AppIcons/key.png`} alt="icon-key" className="app-tops-item_count__icon" />
                         <span className="app-tops-item_count__keys">334</span>
                     </div>
                 </div>
