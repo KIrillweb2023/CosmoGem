@@ -25,7 +25,6 @@ a {
   background: url("../../assets/bg-game/bg-game.jpg") center center / cover no-repeat;
   position: relative;
   z-index: 0;
-  overflow-y: scroll;
 
   &-overlay {
     position: absolute;
@@ -35,5 +34,6 @@ a {
     width: 100%;
     height: 100vh;
     z-index: -1;
+    overflow-y: scroll;
   }
 }

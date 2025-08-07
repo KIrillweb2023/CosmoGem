@@ -1,0 +1,18 @@
+.app {
+    &-settings {
+        &-avatar {
+            &_wrapper {
+                width: 100%;
+                height: auto;
+                display: flex;
+                justify-content: center;
+            }
+
+            &_image {
+                width: 50%;
+                border-radius: 100%;
+                box-shadow: 0px 0px 20px 2px #7c1b6f;
+            }
+        }
+    }
+}

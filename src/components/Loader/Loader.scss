@@ -1,0 +1,39 @@
+.app {
+    &-loading {
+        background: url("../../assets/bg-game/bg-loading.jpeg") center center / cover no-repeat;
+        width: 100%;
+        position: absolute;
+        z-index: 100;
+        height: 100vh;
+        top: 0;
+        left: 0;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &-overlay {
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: #0000009c;
+        }
+
+        &-text {
+            color: #fff;
+            font-size: 36px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+            text-shadow:
+                0 0 10px rgba(168, 85, 247, 0.7),
+                0 0 20px rgba(124, 58, 237, 0.4);
+            position: relative;
+
+        }
+    }
+}

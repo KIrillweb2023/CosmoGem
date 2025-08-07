@@ -3,13 +3,15 @@ import { gsap } from 'gsap';
 import * as PIXI from 'pixi.js';
 import { safeDestroyGem } from '../utils/safeDestroyGem';
 
+import { AnimateHover, AnimatePosition } from '../utils/AnimationUtils';
+
 
 export const useGems = (appRef, boardContainerRef, config, gemTypes, loadedTexturesRef) => {
     const boardRef = useRef([]);
     const selectedGemRef = useRef(null);
     const lastSelectedGemRef = useRef(null);
     const isRecreatingRef = useRef(false);
-    const isSwappingRef = useRef(false); // Added to prevent swaps during animation
+    const isSwappingRef = useRef(false);
     const [combo, setCombo] = useState(0);
     const comboTextRef = useRef(null);
     const [score, setScore] = useState(0);
@@ -37,7 +39,8 @@ export const useGems = (appRef, boardContainerRef, config, gemTypes, loadedTextu
         }
 
         const gem = new PIXI.Container();
-        gem.interactive = gem.buttonMode = true;
+        gem.eventMode = 'static';
+        gem.cursor = 'pointer';
         gem.data = { type, x, y };
 
         const gemSprite = new PIXI.Sprite(loadedTexturesRef.current[type]);
@@ -63,12 +66,9 @@ export const useGems = (appRef, boardContainerRef, config, gemTypes, loadedTextu
             gem.data.hoverAnimation.kill();
         }
 
-        gem.data.hoverAnimation = gsap.to(gem.scale, {
-            x: 1.1,
-            y: 1.1,
-            duration: 0.2,
-            ease: "power1.out"
-        });
+        gem.data.hoverAnimation = AnimateHover(gem, {
+            x: 1.1, y: 1.1, duration: 0.2, ease: "power1.out"
+        })
     };
 
     const handleGemOut = (gem) => {
@@ -77,12 +77,12 @@ export const useGems = (appRef, boardContainerRef, config, gemTypes, loadedTextu
         }
 
         if (gem !== selectedGemRef.current) {
-            gsap.to(gem.scale, {
+            AnimateHover(gem, {
                 x: gem.data.originalScale.x,
                 y: gem.data.originalScale.y,
                 duration: 0.2,
                 ease: "power1.out"
-            });
+            })
         }
     };
 
@@ -120,12 +120,9 @@ export const useGems = (appRef, boardContainerRef, config, gemTypes, loadedTextu
             gem.data.selectionAnimation.kill();
         }
 
-        gem.data.selectionAnimation = gsap.to(gem.scale, {
-            x: 1.2,
-            y: 1.2,
-            duration: 0.2,
-            ease: "power1.out"
-        });
+        gem.data.selectionAnimation = AnimateHover(gem, {
+            x: 1.2, y: 1.2, duration: 0.2, ease: "power1.out"
+        })
     };
 
     const deselectGem = (gem) => {
@@ -137,12 +134,10 @@ export const useGems = (appRef, boardContainerRef, config, gemTypes, loadedTextu
         }
 
         gem.data.originalScale = { x: 1, y: 1 };
-        gsap.to(gem.scale, {
-            x: 1,
-            y: 1,
-            duration: 0.2,
-            ease: "power1.out"
-        });
+
+        AnimateHover(gem, {
+            x: 1, y: 1, duration: 0.2, ease: "power1.out"
+        })
 
         selectedGemRef.current = null;
     };
@@ -150,8 +145,8 @@ export const useGems = (appRef, boardContainerRef, config, gemTypes, loadedTextu
     const swapAndCheckMatches = async (gem1, gem2) => {
         isSwappingRef.current = true;
         try {
-            gsap.to(gem1.scale, { x: 1, y: 1, duration: 0.2 });
-            gsap.to(gem2.scale, { x: 1, y: 1, duration: 0.2 });
+            AnimateHover(gem1, { x: 1, y: 1, duration: 0.2 })
+            AnimateHover(gem2, { x: 1, y: 1, duration: 0.2 })
 
             const originalPositions = {
                 gem1: { x: gem1.data.x, y: gem1.data.y },
@@ -181,7 +176,6 @@ export const useGems = (appRef, boardContainerRef, config, gemTypes, loadedTextu
 
         while (matches.size > 0) {
             comboCount++;
-            updateCombo(comboCount);
 
             await destroyGems(Array.from(matches));
             await dropGems();
@@ -296,22 +290,22 @@ export const useGems = (appRef, boardContainerRef, config, gemTypes, loadedTextu
 
         await Promise.all([
             new Promise(resolve => {
-                gsap.to(gem1.position, {
+                AnimatePosition(gem1, {
                     x: gem1TargetX,
                     y: gem1TargetY,
                     duration: 0.3,
                     ease: "power1.out",
-                    onComplete: resolve
-                });
+                    onComplete: () => resolve()
+                })
             }),
             new Promise(resolve => {
-                gsap.to(gem2.position, {
+                AnimatePosition(gem2, {
                     x: gem2TargetX,
                     y: gem2TargetY,
                     duration: 0.3,
                     ease: "power1.out",
-                    onComplete: resolve
-                });
+                    onComplete: () => resolve()
+                })
             })
         ]);
     };
@@ -337,22 +331,22 @@ export const useGems = (appRef, boardContainerRef, config, gemTypes, loadedTextu
 
         await Promise.all([
             new Promise(resolve => {
-                gsap.to(gem1.position, {
+                AnimatePosition(gem1, {
                     x: gem1OriginalX,
                     y: gem1OriginalY,
                     duration: 0.3,
                     ease: "power1.out",
-                    onComplete: resolve
-                });
+                    onComplete: () => resolve()
+                })
             }),
             new Promise(resolve => {
-                gsap.to(gem2.position, {
+                AnimatePosition(gem1, {
                     x: gem2OriginalX,
                     y: gem2OriginalY,
                     duration: 0.3,
                     ease: "power1.out",
-                    onComplete: resolve
-                });
+                    onComplete: () => resolve()
+                })
             })
         ]);
     };
@@ -611,38 +605,17 @@ export const useGems = (appRef, boardContainerRef, config, gemTypes, loadedTextu
         // Для новых камней устанавливаем небольшой scale для эффекта "появления"
         if (withAnimation) {
             gem.scale.set(0.8);
-            gsap.to(gem.scale, {
+            AnimateHover(gem, {
                 x: 1,
                 y: 1,
                 duration: 0.2,
                 ease: "elastic.out(1, 0.5)"
-            });
+            })
         }
 
         sortChildrenByYPosition();
         return gem;
     }, [config, getRandomGemTypeWithoutMatches, createGem, sortChildrenByYPosition]);
-
-    const setupGemPosition = (obj, x, y, withAnimation) => {
-        const cellSize = config.gemSize + config.gemPadding;
-        const targetX = x * cellSize + config.gemSize / 2;
-        const targetY = y * cellSize + config.gemSize / 2;
-
-        if (withAnimation) {
-            const startY = -config.gemSize * 2;
-            obj.position.set(targetX, startY);
-            boardContainerRef.current.addChild(obj);
-
-            gsap.to(obj.position, {
-                y: targetY,
-                duration: 0.5 + y * 0.05,
-                ease: "bounce.out"
-            });
-        } else {
-            obj.position.set(targetX, targetY);
-            boardContainerRef.current.addChild(obj);
-        }
-    };
 
     const hasValidMoves = () => {
         // Implement proper move checking logic here
@@ -730,23 +703,6 @@ export const useGems = (appRef, boardContainerRef, config, gemTypes, loadedTextu
         }
     };
 
-    const updateCombo = (newCombo) => {
-        setCombo(newCombo);
-        if (comboTextRef.current) {
-            if (newCombo > 1) {
-                comboTextRef.current.text = `COMBO x${newCombo}!`;
-                comboTextRef.current.alpha = 1;
-                gsap.to(comboTextRef.current, {
-                    alpha: 0,
-                    duration: 1,
-                    delay: 0.5,
-                    ease: "power1.out"
-                });
-            } else {
-                comboTextRef.current.alpha = 0;
-            }
-        }
-    };
 
     return {
         boardRef,
@@ -769,6 +725,5 @@ export const useGems = (appRef, boardContainerRef, config, gemTypes, loadedTextu
         removeInitialMatches,
         recreateBoard,
         setupComboText,
-        updateCombo
     };
 };

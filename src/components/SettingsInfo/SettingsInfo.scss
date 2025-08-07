@@ -1,0 +1,48 @@
+.app {
+    &-settings {
+        &-info {
+            display: flex;
+            flex-direction: column;
+            row-gap: 10px;
+            margin-top: 10px;
+
+            &_item {
+                width: 100%;
+                height: auto;
+                padding: 20px 20px;
+                background: rgba(31, 0, 60, 0.7);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 10px;
+                justify-content: space-between;
+                display: flex;
+                align-items: center;
+
+                &__name {
+                    background: #00000000;
+                    outline: none;
+                    border: none;
+                    color: #c4b5fd;
+                    font-weight: 600;
+                    font-size: 18px;
+                    transition: 0.2s ease-in-out;
+                    flex: 1;
+
+                    &::placeholder {
+                        color: #c4b5fd;
+                    }
+
+                    &:focus {
+                        &::placeholder {
+                            color: #c3b5fd48;
+                        }
+                    }
+                }
+
+                &__count {
+                    color: #c4b5fd;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+}

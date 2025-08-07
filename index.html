@@ -17,15 +17,26 @@
   <div id="root"></div>
 
   <script>
+    // После загрузки приложения
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js')
-          .then(registration => {
-            console.log('SW registered:', registration);
-          })
-          .catch(error => {
-            console.log('SW registration failed:', error);
-          });
+      // Регистрируем Service Worker
+      navigator.serviceWorker.register(`/CosmoGem/sw.js`).then(registration => {
+        // Отправляем сообщение для кэширования текущей страницы
+        registration.active?.postMessage({
+          type: 'CACHE_NEW_ASSETS',
+          url: window.location.pathname
+        });
+
+        // Кэшируем все статические ресурсы после загрузки
+        window.addEventListener('load', () => {
+          const staticAssets = Array.from(document.querySelectorAll(
+            'script[src], link[rel="stylesheet"], img[src], source[src]'
+          )).map(el => el.src || el.href).filter(Boolean);
+
+          caches.open('my-game-cache-v3').then(cache =>
+            cache.addAll(staticAssets)
+          );
+        });
       });
     }
   </script>

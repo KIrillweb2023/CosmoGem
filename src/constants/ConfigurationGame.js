@@ -18,7 +18,7 @@ const config = {
     keys: {
         spawnChance: 0.05,
         scoreValue: 150,
-        texture: `${import.meta.env.BASE_URL}/key.png`
+        texture: `${import.meta.env.BASE_URL}/AppIcons/key.png`
     }
 };
 
